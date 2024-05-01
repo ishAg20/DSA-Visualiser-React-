@@ -7,7 +7,7 @@ const Sorting = () => {
   const [array, setArray] = useState([]);
   const [sortedArray, setSortedArray] = useState([]);
   const [speed, setSpeed] = useState(2);
-  const [c_delay, setC_delay] = useState(0); // Changed from let to const
+  const [c_delay, setC_delay] = useState(0);
   const [divs, setDivs] = useState([]);
   const [sortingInProgress, setSortingInProgress] = useState(false);
   let delay_time = 0;
@@ -33,8 +33,8 @@ const Sorting = () => {
   }, [arraySize, array]);
 
   useEffect(() => {
-    vis_speed(); // Update speed whenever slider value changes
-  }, [speed]); // Added dependency on speed
+    vis_speed();
+  }, [speed]);
 
   const generateArray = () => {
     const newArray = [];
@@ -86,6 +86,7 @@ const Sorting = () => {
     speedInput.disabled = false;
     setSortingInProgress(false);
   };
+
   const [elementsRendered, setElementsRendered] = useState(false);
 
   useEffect(() => {
@@ -93,6 +94,7 @@ const Sorting = () => {
       setElementsRendered(true);
     }
   }, [array, arraySize, sortingInProgress]);
+
   const runalgo = (event) => {
     disable_buttons();
     event.target.classList.add("selected");
@@ -116,6 +118,7 @@ const Sorting = () => {
         break;
     }
   };
+
   const vis_speed = () => {
     let array_speed = speed;
     let s;
@@ -151,6 +154,7 @@ const Sorting = () => {
       cont.style.backgroundColor = color;
     }, c_delay);
   };
+
   const Bubble = () => {
     setSortingInProgress(true);
     document.getElementById("Time_Worst").innerText = "O(N^2)";
@@ -158,33 +162,26 @@ const Sorting = () => {
     document.getElementById("Time_Best").innerText = "Ω(N^2)";
     document.getElementById("Space_Worst").innerText = "O(1)";
     const animations = [];
-
     let newArray = [...array];
-
     for (let i = 0; i < arraySize - 1; i++) {
       for (let j = 0; j < arraySize - i - 1; j++) {
-        animations.push([j, j + 1]); // Add animation steps for comparison
+        animations.push([j, j + 1]);
         if (newArray[j] > newArray[j + 1]) {
-          animations.push([j, j + 1, true]); // Add animation steps for swap
+          animations.push([j, j + 1, true]);
           let temp = newArray[j];
           newArray[j] = newArray[j + 1];
           newArray[j + 1] = temp;
         }
       }
     }
-
-    // Run animations
     let timer = 0;
     animations.forEach((animation, index) => {
       const [firstIndex, secondIndex, swap] = animation;
       setTimeout(() => {
-        // Swap heights visually
         const tempHeight = divRefs.current[firstIndex].style.height;
         divRefs.current[firstIndex].style.height =
           divRefs.current[secondIndex].style.height;
         divRefs.current[secondIndex].style.height = tempHeight;
-
-        // Swap values in the array state if needed
         if (swap) {
           [array[firstIndex], array[secondIndex]] = [
             array[secondIndex],
@@ -192,8 +189,6 @@ const Sorting = () => {
           ];
           setArray([...array]);
         }
-
-        // Enable buttons after sorting
         if (index === animations.length - 1) {
           setTimeout(() => {
             enable_buttons();
@@ -212,35 +207,27 @@ const Sorting = () => {
     document.getElementById("Time_Average").innerText = "Θ(N^2)";
     document.getElementById("Time_Best").innerText = "Ω(N^2)";
     document.getElementById("Space_Worst").innerText = "O(1)";
-
     const animations = [];
-
     let newArray = [...array];
-
     for (let i = 0; i < arraySize - 1; i++) {
       for (let j = 0; j < arraySize - i - 1; j++) {
-        animations.push([j, j + 1]); // Add animation steps for comparison
+        animations.push([j, j + 1]);
         if (newArray[j] > newArray[j + 1]) {
-          animations.push([j, j + 1, true]); // Add animation steps for swap
+          animations.push([j, j + 1, true]);
           let min_index = newArray[j];
           newArray[j] = newArray[j + 1];
           newArray[j + 1] = min_index;
         }
       }
     }
-
-    // Run animations
     let timer = 0;
     animations.forEach((animation, index) => {
       const [firstIndex, secondIndex, swap] = animation;
       setTimeout(() => {
-        // Swap heights visually
         const tempHeight = divRefs.current[firstIndex].style.height;
         divRefs.current[firstIndex].style.height =
           divRefs.current[secondIndex].style.height;
         divRefs.current[secondIndex].style.height = tempHeight;
-
-        // Swap values in the array state if needed
         if (swap) {
           [array[firstIndex], array[secondIndex]] = [
             array[secondIndex],
@@ -248,8 +235,6 @@ const Sorting = () => {
           ];
           setArray([...array]);
         }
-
-        // Enable buttons after sorting
         if (index === animations.length - 1) {
           setTimeout(() => {
             enable_buttons();
@@ -270,7 +255,6 @@ const Sorting = () => {
     document.getElementById("Space_Worst").innerText = "O(1)";
     const animations = [];
     const newArray = [...array];
-
     for (let j = 1; j <= arraySize; j++) {
       let key = newArray[j];
       let i = j - 1;
@@ -279,25 +263,18 @@ const Sorting = () => {
         newArray[i + 1] = newArray[i];
         i--;
       }
-
       newArray[i + 1] = key;
     }
-    // Run animations
     let timer = 0;
     animations.forEach((animation, index) => {
       const [currentIndex, nextIndex, value] = animation;
       setTimeout(() => {
-        // Swap heights visually
         const tempHeight = divRefs.current[currentIndex].style.height;
         divRefs.current[currentIndex].style.height =
           divRefs.current[nextIndex].style.height;
         divRefs.current[nextIndex].style.height = tempHeight;
-
-        // Update array state with sorted values
         array[currentIndex] = value;
         setArray([...array]);
-
-        // Enable buttons after sorting
         if (index === animations.length - 1) {
           setTimeout(() => {
             enable_buttons();
@@ -309,27 +286,27 @@ const Sorting = () => {
       timer++;
     });
   };
+
   const Merge = () => {
     setSortingInProgress(true);
     document.getElementById("Time_Worst").innerText = "O(N log N)";
     document.getElementById("Time_Average").innerText = "Θ(N log N)";
     document.getElementById("Time_Best").innerText = "Ω(N log N)";
     document.getElementById("Space_Worst").innerText = "O(N)";
-
     const animations = [];
-
     const newArray = [...array];
-
     merge_partition(0, arraySize - 1, animations);
     let timer = 0;
     const animationInterval = setInterval(() => {
       if (timer < animations.length) {
-        const [animationType, index1, index2, value] = animations[timer];
+        const [animationType, index1, value, index2] = animations[timer];
         if (animationType === "merge") {
           div_update(divRefs.current[index1], value, "#2d7f9d");
         } else if (animationType === "compare") {
-          div_update(divRefs.current[index1], array[index1], value);
-          div_update(divRefs.current[index2], array[index2], value);
+          div_update(divRefs.current[index1], array[index1], "#ffa07a");
+          if (index2 !== undefined) {
+            div_update(divRefs.current[index2], array[index2], "#ffa07a");
+          }
         }
       } else {
         clearInterval(animationInterval);
@@ -342,130 +319,114 @@ const Sorting = () => {
       timer++;
     }, c_delay);
   };
+
   function merge_partition(start, end, animations) {
     if (start < end) {
       var mid = Math.floor((start + end) / 2);
-
       merge_partition(start, mid, animations);
       merge_partition(mid + 1, end, animations);
-
       merge_sort(start, mid, end, animations);
     }
   }
+
   const merge_sort = (start, mid, end, animations) => {
     let p = start,
       q = mid + 1;
-
     const tempArray = [];
     let k = 0;
-
     for (let i = start; i <= end; i++) {
       if (p > mid) {
-        animations.push(["compare", q, q, "#ffa07a"]); // Push comparison animation
+        animations.push(["compare", q, q]);
+        animations.push(["merge", q, array[q], q]);
         tempArray[k++] = array[q++];
       } else if (q > end) {
-        animations.push(["compare", p, p, "#ffa07a"]); // Push comparison animation
+        animations.push(["compare", p, p]);
+        animations.push(["merge", p, array[p], p]);
         tempArray[k++] = array[p++];
       } else if (array[p] < array[q]) {
-        animations.push(["compare", p, q, "#ffa07a"]); // Push comparison animation
-        animations.push(["merge", p, q, array[p]]); // Push merge animation
+        animations.push(["compare", p, q]);
+        animations.push(["merge", p, array[p], p]);
         tempArray[k++] = array[p++];
       } else {
-        animations.push(["compare", p, q, "#ffa07a"]); // Push comparison animation
-        animations.push(["merge", p, q, array[q]]); // Push merge animation
+        animations.push(["compare", p, q]);
+        animations.push(["merge", q, array[q], q]);
         tempArray[k++] = array[q++];
       }
     }
-
-    // Copy back the elements from tempArray to the original array
     for (let t = 0; t < k; t++) {
-      array[start++] = tempArray[t];
+      animations.push(["merge", start + t, tempArray[t], start + t]);
+      array[start + t] = tempArray[t];
     }
+    setArray([...array]);
   };
 
   const Quick = () => {
-    // Update time and space complexities
     document.getElementById("Time_Worst").innerText = "O(N^2)";
     document.getElementById("Time_Average").innerText = "Θ(N log N)";
     document.getElementById("Time_Best").innerText = "Ω(N log N)";
     document.getElementById("Space_Worst").innerText = "O(log N)";
-
     const animations = [];
-
-    // Perform quick sort and record animations
-    quick_sort(0, arraySize - 1, animations);
-
-    // Initialize timer for animations
+    const sortedArray = [...array];
+    quick_sort(0, arraySize - 1, array, animations);
     let timer = 0;
     const animationInterval = setInterval(() => {
-      // Check if there are remaining animations
       if (timer < animations.length) {
-        const [animationType, index1, index2] = animations[timer];
+        const [animationType, index1, index2, value] = animations[timer];
         if (animationType === "swap") {
-          // Swap heights visually
           const tempHeight = divRefs.current[index1].style.height;
           divRefs.current[index1].style.height =
             divRefs.current[index2].style.height;
           divRefs.current[index2].style.height = tempHeight;
-
-          // Swap values in div_sizes array
-          [div_sizes[index1], div_sizes[index2]] = [
-            div_sizes[index2],
-            div_sizes[index1],
-          ];
+          [array[index1], array[index2]] = [array[index2], array[index1]];
+          setArray([...array]);
+        } else if (animationType === "compare") {
+          div_update(divRefs.current[index1], array[index1], "#ffa07a");
+          div_update(divRefs.current[index2], array[index2], "#ffa07a");
         }
       } else {
-        // No more animations, stop the interval and enable buttons
         clearInterval(animationInterval);
         enable_buttons();
       }
-      timer++; // Move to the next animation
+      timer++;
     }, c_delay);
   };
 
-  const quick_partition = (start, end, animations) => {
-    // Select a random pivot between start and end (inclusive)
+  const quick_sort = (start, end, array, animations) => {
+    if (start < end) {
+      const pivotIndex = quick_partition(start, end, array, animations);
+      quick_sort(start, pivotIndex - 1, array, animations);
+      quick_sort(pivotIndex + 1, end, array, animations);
+    }
+  };
+
+  const quick_partition = (start, end, array, animations) => {
     const pivotIndex = Math.floor(Math.random() * (end - start + 1)) + start;
-    const pivotHeight = div_sizes[pivotIndex];
-
-    // Swap the pivot with the first element (for convenience)
-    [div_sizes[start], div_sizes[pivotIndex]] = [
-      div_sizes[pivotIndex],
-      div_sizes[start],
-    ];
-    animations.push(["swap", start, pivotIndex]);
-
+    const pivotHeight = array[pivotIndex];
+    [array[start], array[pivotIndex]] = [array[pivotIndex], array[start]];
+    animations.push(["swap", start, pivotIndex, array[pivotIndex]]);
+    animations.push(["swap", pivotIndex, start, array[start]]);
     let i = start;
     for (let j = start + 1; j <= end; j++) {
-      animations.push(["compare", j, start]); // Highlight elements being compared
-      if (div_sizes[j] < pivotHeight) {
+      animations.push(["compare", j, start]);
+      if (array[j] < pivotHeight) {
         i++;
-        animations.push(["swap", i, j]);
-        [div_sizes[i], div_sizes[j]] = [div_sizes[j], div_sizes[i]];
+        animations.push(["swap", i, j, array[j]]);
+        animations.push(["swap", j, i, array[i]]);
+        [array[i], array[j]] = [array[j], array[i]];
       }
     }
-
-    // Swap the pivot with the element at i (final position of smaller elements)
-    animations.push(["swap", start, i]);
-    [div_sizes[start], div_sizes[i]] = [div_sizes[i], div_sizes[start]];
-
+    animations.push(["swap", start, i, array[i]]);
+    animations.push(["swap", i, start, array[start]]);
+    [array[start], array[i]] = [array[i], array[start]];
     return i;
   };
 
-  const quick_sort = (start, end, animations) => {
-    if (start < end) {
-      const pivotIndex = quick_partition(start, end, animations);
-      quick_sort(start, pivotIndex - 1, animations);
-      quick_sort(pivotIndex + 1, end, animations);
-    }
-  };
-
   useEffect(() => {
-    // Assign refs after the elements are rendered
     divRefs.current = Array(arraySize)
       .fill()
       .map((_, index) => divRefs.current[index] || React.createRef());
   }, [arraySize]);
+
   const renderArray = () => {
     return array.slice(0, arraySize).map((height, index) => (
       <div
@@ -480,6 +441,7 @@ const Sorting = () => {
       />
     ));
   };
+
   const renderSortedArray = () => {
     return sortedArray.slice(0, arraySize).map((height, index) => (
       <div
@@ -487,12 +449,13 @@ const Sorting = () => {
         style={{
           height: `${height}%`,
           width: `${100 / arraySize}%`,
-          backgroundColor: "#ffa07a", // Change color for sorted array
+          backgroundColor: "#ffa07a",
           margin: `0% ${0.1 * (100 / arraySize)}%`,
         }}
       />
     ));
   };
+
   return (
     <div>
       <header>
@@ -502,8 +465,8 @@ const Sorting = () => {
             <input
               id="a_size"
               type="range"
-              min="20"
-              max="30"
+              min="5"
+              max="50"
               step="1"
               value={arraySize}
               className="accent"
@@ -547,26 +510,21 @@ const Sorting = () => {
               <p className="time_case">Worst case:</p>
               <p id="Time_Worst"></p>
             </div>
-
             <div className="info_sub">
               <p className="time_case">Average case:</p>
               <p id="Time_Average"></p>
             </div>
-
             <div className="info_sub">
               <p className="time_case">Best case:</p>
               <p id="Time_Best"></p>
             </div>
           </div>
         </div>
-
         <div id="array_container" className="array-container">
           {renderArray()}
         </div>
-
         <div className="info">
           <h3>SPACE COMPLEXITY</h3>
-
           <div className="complexity" id="Space_Complexity_Types_Container">
             <div className="info_sub">
               <p className="time_case">Worst case:</p>
@@ -575,14 +533,11 @@ const Sorting = () => {
           </div>
         </div>
         <div className="array-section">
-          {/* <h3>Original Array</h3> */}
           <div id="original_array" className="array-container">
             {renderArray()}
           </div>
         </div>
-
         <div className="array-section">
-          {/* <h3>Sorted Array</h3> */}
           <div id="sorted_array" className="array-container">
             {renderSortedArray()}
           </div>
@@ -632,32 +587,26 @@ const Sorting = () => {
             <td>O(n log n)</td>
             <td>Yes</td>
             <td>
-              Divides the input array into two halves, sorts each half
-              separately, and then merges the sorted halves.
+              Divides the input array into two halves, recursively sorts the two
+              halves, and then merges the sorted halves.
             </td>
           </tr>
           <tr>
             <td>Quick Sort</td>
+            <td>O(n^2)</td>
+            <td>No</td>
             <td>
-              O(n^2) [Worst case]
-              <br />
-              O(n log n) [Average case]
-            </td>
-            <td>Yes</td>
-            <td>
-              Chooses a pivot element and partitions the array around the pivot
-              such that elements smaller than the pivot are placed before it,
-              and elements larger than the pivot are placed after it. It then
-              recursively sorts the two partitions.
+              Selects a 'pivot' element from the array and partitions the other
+              elements into two sub-arrays according to whether they are less
+              than or greater than the pivot, and then recursively sorts the
+              sub-arrays.
             </td>
           </tr>
         </tbody>
       </table>
-
       <Link to="/" className="inputs">
         Back to Home
       </Link>
-      <p></p>
     </div>
   );
 };
